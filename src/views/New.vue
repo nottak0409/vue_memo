@@ -30,7 +30,9 @@ export default {
     },
     methods: {
         save: function() {
-            alert('保存しました');
+            this.$store.commit('save', {
+                body: this.memoBody
+            });
             this.$router.push("/");
         }
     }
