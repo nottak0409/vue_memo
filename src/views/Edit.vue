@@ -1,17 +1,30 @@
 <template>
     <div class="editor">
         <h1>Edit Memo</h1>
-            <textarea name="memo" v-model="memo.body"></textarea>
-        <button>保存</button>
+            <textarea name="memo" v-model="memoBody"></textarea>
+        <button @click="save">保存</button>
     </div>
 </template>
 <script>
 export default {
     name: 'edit',
-    computed: {
-        memo: function() {
-            let id = this.$route.params["id"];
-            return this.$store.state.memos.find(memo => memo.id == id);
+    data: function() {
+        return {
+            memoBody: ""
+        }
+    },
+    mounted: function(){
+        let id = this.$route.params["id"];
+        let memo = this.$store.state.memos.slice().find(memo => memo.id == id);
+        this.memoBody = memo.body;
+    },
+    methods: {
+        save: function() {
+            this.$store.commit("update", {
+                id: this.$route.params["id"],
+                body: this.memoBody
+            });
+            this.$router.push("/");
         }
     }
 }
